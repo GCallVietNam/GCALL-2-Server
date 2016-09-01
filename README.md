@@ -36,11 +36,14 @@ npm start
 ***
 
 * Manipulate database through Parse
+* Authenticate user with appropriate access to their owned objects
+* Allow to create branches in each hotline
 * Use Push Notification service from Parse
 * Push VoIP using Amazon Web Service
 * Make call with Twilio in WebRTC standard
 * Route calls to appropriate agents in group
 * Check call history
+* Verify mobile phone number by SMS message
 * Divide hotline packages
 * Schedule calculating used features
 * Schedule checking expiry date of hotlines
