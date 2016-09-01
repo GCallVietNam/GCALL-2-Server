@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>GCall version 2</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script type="text/javascript" src="//media.twiliocdn.com/sdk/js/client/v1.3/twilio.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/hover-min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script type="text/javascript" src="//media.twiliocdn.com/sdk/js/client/v1.3/twilio.min.js"></script>
+    <script type="text/javascript" src="script/main.js"></script>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon"/>
+</head>
+<body>
+	<!-- Log in -->
+	<nav id="user-info" class="nav">
+	    <ul>
+	        <li>
+	        	<a>
+	        		<span class="current-phone-number"></span>
+	        	</a>	            
+	            <ul>
+	                <li><a href="" class="log-out-button" onclick="logout()">Log out</a></li>
+	            </ul>
+	        </li>
+	    </ul>
+	</nav>
+	<!-- Page preparing -->
+	<div id="page-loader">
+		<div id="logo"></div>
+	</div>
+	<!-- Logo -->
+	<div id="small-logo" class="hvr-float-shadow">
+	</div>
+	<!-- Submit hotline number -->
+	<div class="dialog" id="enter-hotline-home">
+		<p class="command">HOTLINE</p>
+		<form>
+			<div class="row none-margin select-hotline">
+				<div class="col-md-12 none-padding">
+					<input class="input-box" type="text" id = "inputHotline" name="hotline" placeholder="Hotline number"></input>
+				</div>
+			</div>
+			<div class="row none-margin">
+				<div class="col-md-12 none-padding">
+					<input class="submit-btn" type="button" id="submitHotline" name="submitHotline" value="OK"></input>
+				</div>
+			</div>		
+		</form>
+	</div>
+</body>
+</html>

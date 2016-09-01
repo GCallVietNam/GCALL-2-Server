@@ -1,0 +1,37 @@
+{
+  "name": "gcall",
+  "version": "2.0.0",
+  "description": "This is Gcall 2.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "babel-node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.4.5",
+    "csv-parser": "^1.9.3",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "fs": "0.0.2",
+    "jsonfile": "^2.3.1",
+    "node-schedule": "^1.1.1",
+    "nodemailer": "^2.5.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "bluebird": "^3.4.0",
+    "body-parser": "^1.15.1",
+    "cookie-parser": "^1.4.3",
+    "express-session": "^1.13.0",
+    "forever": "^0.15.2",
+    "http": "0.0.0",
+    "kaiseki": "^0.5.6",
+    "morgan": "^1.7.0",
+    "node-schedule": "^1.1.1",
+    "request": "^2.72.0",
+    "twilio": "^2.9.1",
+    "underscore": "^1.8.3"
+  }
+}

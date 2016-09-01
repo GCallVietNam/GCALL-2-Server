@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>GCall version 2</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script type="text/javascript" src="//media.twiliocdn.com/sdk/js/client/v1.3/twilio.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/hover-min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script type="text/javascript" src="//media.twiliocdn.com/sdk/js/client/v1.3/twilio.min.js"></script>
+    <script type="text/javascript" src="script/main.js"></script>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon"/>
+</head>
+<body>
+	<!-- Log in -->
+	<nav id="user-info" class="nav">
+	    <ul>
+	        <li>
+	        	<a>
+	        		<span class="current-phone-number"></span>
+	        	</a>	            
+	            <ul>
+	                <li><a href="" class="log-out-button" onclick="logout()">Log out</a></li>
+	            </ul>
+	        </li>
+	    </ul>
+	</nav>
+	<!-- Page preparing -->
+	<div id="page-loader">
+		<div id="logo"></div>
+	</div>
+	<!-- Logo -->
+	<div id="small-logo" class="hvr-float-shadow">
+	</div>
+	<!-- Select group to call -->
+	<div class="dialog" id="select-team">
+		<% if (data.type=='subgroup'){ %>
+		<p class="command">
+			<button class="visible-sub-subgroup col-md-2 col-xs-3 none-padding" onclick="backToPrevGroup()">
+				<img src="/images/back.png">
+			</button>
+			<span class="">SUPPORT GROUPS</span>
+		</p>
+		<ul class="list-team">
+			<!-- Test check sub-subgroup -->
+			<% data.data.forEach(function(subgroup){ %>
+				<%if (subgroup.has == 'agent') {%>
+					<li class="item text-left" onclick="makeCall(<%= subgroup.extension %>)">
+						<div class="team active row none-margin">
+							<img src="/images/agent.png" alt="agent image" class="img-thumbnail col-xs-3 col-md-2">
+							<span class="team-name hvr-underline-from-left col-xs-9 col-md-10 none-padding"><%= subgroup.name %></span>
+						</div>
+					</li>
+				<%} else if(subgroup.has == 'subgroup'){%>
+					<li class="item text-left" onclick="openSubGroup(<%= subgroup.extension %>)">
+						<div class="team active row none-margin">
+							<img src="/images/group.png" alt="agent image" class="img-thumbnail col-xs-3 col-md-2">
+							<span class="team-name hvr-underline-from-left col-xs-9 col-md-10 none-padding"><%= subgroup.name %></span>
+						</div>
+					</li>
+				<%}%>
+			<% }) %>
+		</ul>
+		<% } %>
+		<% if (data.type=='agent'){ %>
+			<ul class="list-team none-padding">
+				<p class="command" id="click-to-call-title">
+					<img src="/images/click-to-call.png" id = "call-img">
+					<br>Click to call
+				</p>
+				<div class = "function-btn">
+					<input type="button" id="call-now" name="call-now-button" value="CALL" onclick="makeCallNow()"></input>
+					<!-- <button onclick="makeCallNow()" id="call-now" class="hvr-buzz-out"></button> -->
+				</div>				
+			</ul>
+		<% } %>
+	</div>
+	<!-- Submit phone number -->
+	<div class="dialog" id="enter-phone">
+		<p class="command">SIGN IN | SIGN UP</p>
+		<form>
+			<div class="row none-margin select-country-code">
+				<div class="col-xs-4 col-md-5 row none-margin country-code-view">
+					<div class="col-xs-9 col-md-9 country-code-content row none-margin">
+						<span class="col-md-2 col-xs-3 none-padding"></span>
+						<span class="country-name-view col-md-10 col-xs-9 none-padding">+84</span>
+					</div>
+					<div class="dropdown col-xs-3 col-md-3 none-padding">
+						<button class="btn btn-primary dropdown-toggle dropdown-button" type="button" data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Algeria (+213)">Algeria</span>
+								<span class="code col-md-3 none-padding">+213</span>
+							</li>
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Andorra (+244)">Andorra</span>
+								<span class="code col-md-3 none-padding">+244</span>
+							</li>
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Argentina (+54)">Argentina</span>
+								<span class="code col-md-3 none-padding">+54</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Armenia (+74)">Armenia</span>
+								<span class="code col-md-3 none-padding">+74</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Australia (+61)">Australia</span>
+								<span class="code col-md-3 none-padding">+61</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Austria (+43)">Austria</span>
+								<span class="code col-md-3 none-padding">+43</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Azerbaijan (+994)">Azerbaijan</span>
+								<span class="code col-md-3 none-padding">+994</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bahamas (+1242)">Bahamas</span>
+								<span class="code col-md-3 none-padding">+1242</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bahrain (+973)">Bahrain</span>
+								<span class="code col-md-3 none-padding">+973</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bangladesh (+880)">Bangladesh</span>
+								<span class="code col-md-3 none-padding">+880</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Barbados (+1246)">Barbados</span>
+								<span class="code col-md-3 none-padding">+1246</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Belarus (+375)">Belarus</span>
+								<span class="code col-md-3 none-padding">+375</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Belgium (+32)">Belgium</span>
+								<span class="code col-md-3 none-padding">+32</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Belize (+501)">Belize</span>
+								<span class="code col-md-3 none-padding">+501</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bhutan (+975)">Bhutan</span>
+								<span class="code col-md-3 none-padding">+975</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bolivia (+591)">Bolivia</span>
+								<span class="code col-md-3 none-padding">+591</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Botswana (+267)">Botswana</span>
+								<span class="code col-md-3 none-padding">+267</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Brazil (+55)">Brazil</span>
+								<span class="code col-md-3 none-padding">+55</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Brunei (+673)">Brunei</span>
+								<span class="code col-md-3 none-padding">+673</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Bulgaria (+359)">Bulgaria</span>
+								<span class="code col-md-3 none-padding">+359</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Burundi (+257)">Burundi</span>
+								<span class="code col-md-3 none-padding">+257</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Cambodia (+885)">Cambodia</span>
+								<span class="code col-md-3 none-padding">+855</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Cameroon (+237)">Cameroon</span>
+								<span class="code col-md-3 none-padding">+237</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Canada (+1)">Canada</span>
+								<span class="code col-md-3 none-padding">+1</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Chile (+56)">Chile</span>
+								<span class="code col-md-3 none-padding">+56</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="China (+86)">China</span>
+								<span class="code col-md-3 none-padding">+86</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Colombia (+57)">Colombia</span>
+								<span class="code col-md-3 none-padding">+57</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Comoros (+269)">Comoros</span>
+								<span class="code col-md-3 none-padding">+269</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Croatia (+385)">Croatia</span>
+								<span class="code col-md-3 none-padding">+385</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Cuba (+53)">Cuba</span>
+								<span class="code col-md-3 none-padding">+53</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Cuba (+53)">Cuba</span>
+								<span class="code col-md-3 none-padding">+53</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Denmark (+45)">Denmark</span>
+								<span class="code col-md-3 none-padding">+45</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Djibouti (+253)">Djibouti</span>
+								<span class="code col-md-3 none-padding">+253</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Dominica (+1809)">Dominica</span>
+								<span class="code col-md-3 none-padding">+1809</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Ecuador (+593)">Ecuador</span>
+								<span class="code col-md-3 none-padding">+593</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Egypt (+20)">Egypt</span>
+								<span class="code col-md-3 none-padding">+20</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Eritrea (+291)">Eritrea</span>
+								<span class="code col-md-3 none-padding">+291</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Estonia (+372)">Estonia</span>
+								<span class="code col-md-3 none-padding">+372</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Ethiopia (+251)">Ethiopia</span>
+								<span class="code col-md-3 none-padding">+251</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Fiji (+679)">Fiji</span>
+								<span class="code col-md-3 none-padding">+679</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Finland (+358)">Finland</span>
+								<span class="code col-md-3 none-padding">+358</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="France (+33)">France</span>
+								<span class="code col-md-3 none-padding">+33</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Gabon (+241)">Gabon</span>
+								<span class="code col-md-3 none-padding">+241</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Gambia (+220)">Gambia</span>
+								<span class="code col-md-3 none-padding">+220</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Georgia (+7880)">Georgia</span>
+								<span class="code col-md-3 none-padding">+7880</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Germany (+49)">Germany</span>
+								<span class="code col-md-3 none-padding">+49</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Ghana (+233)">Ghana</span>
+								<span class="code col-md-3 none-padding">+233</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Grecee (+30)">Grecee</span>
+								<span class="code col-md-3 none-padding">+30</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Grenada (+1473)">Grenada</span>
+								<span class="code col-md-3 none-padding">+1473</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Guatemala (+502)">Guatemala</span>
+								<span class="code col-md-3 none-padding">+502</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Guinea (+224)">Guinea</span>
+								<span class="code col-md-3 none-padding">+224</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Guyana (+592)">Guyana</span>
+								<span class="code col-md-3 none-padding">+592</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Haiti (+509)">Haiti</span>
+								<span class="code col-md-3 none-padding">+509</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Honduras (+504)">Honduras</span>
+								<span class="code col-md-3 none-padding">+504</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Hungary (+36)">Hungary</span>
+								<span class="code col-md-3 none-padding">+36</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Iceland (+354)">Iceland</span>
+								<span class="code col-md-3 none-padding">+354</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="India (+91)">India</span>
+								<span class="code col-md-3 none-padding">+91</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Indonesia (+62)">Indonesia</span>
+								<span class="code col-md-3 none-padding">+62</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Iran (+98)">Iran</span>
+								<span class="code col-md-3 none-padding">+98</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Iraq (+964)">Iraq</span>
+								<span class="code col-md-3 none-padding">+964</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Ireland (+353)">Ireland</span>
+								<span class="code col-md-3 none-padding">+353</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Israel (+972)">Israel</span>
+								<span class="code col-md-3 none-padding">+972</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Italy (+39)">Italy</span>
+								<span class="code col-md-3 none-padding">+39</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Jamaica (+1876)">Jamaica</span>
+								<span class="code col-md-3 none-padding">+1876</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Japan (+81)">Japan</span>
+								<span class="code col-md-3 none-padding">+81</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Jordan (+962)">Jordan</span>
+								<span class="code col-md-3 none-padding">+962</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Kazakhstan (+7)">Kazakhstan</span>
+								<span class="code col-md-3 none-padding">+7</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Kenya (+254)">Kenya</span>
+								<span class="code col-md-3 none-padding">+254</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Kiribati (+686)">Kiribati</span>
+								<span class="code col-md-3 none-padding">+686</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Kiribati (+82)">Korea</span>
+								<span class="code col-md-3 none-padding">+82</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Kiribati (+82)">Korea</span>
+								<span class="code col-md-3 none-padding">+82</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Laos (+856)">Laos</span>
+								<span class="code col-md-3 none-padding">+856</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Latvia (+371)">Latvia</span>
+								<span class="code col-md-3 none-padding">+371</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Lebanon (+961)">Lebanon</span>
+								<span class="code col-md-3 none-padding">+961</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Lesotho (+266)">Lesotho</span>
+								<span class="code col-md-3 none-padding">+266</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Liberia (+231)">Liberia</span>
+								<span class="code col-md-3 none-padding">+231</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Libya (+218)">Libya</span>
+								<span class="code col-md-3 none-padding">+218</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Liechtenstein (+417)">Liechtenstein</span>
+								<span class="code col-md-3 none-padding">+417</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Lithuania (+370)">Lithuania</span>
+								<span class="code col-md-3 none-padding">+370</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Luxembourg (+352)">Luxembourg</span>
+								<span class="code col-md-3 none-padding">+352</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Macedonia (+389)">Macedonia</span>
+								<span class="code col-md-3 none-padding">+389</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Madagascar (+261)">Madagascar</span>
+								<span class="code col-md-3 none-padding">+261</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Malawi (+265)">Malawi</span>
+								<span class="code col-md-3 none-padding">+265</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Malaysia (+60)">Malaysia</span>
+								<span class="code col-md-3 none-padding">+60</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Maldives (+960)">Maldives</span>
+								<span class="code col-md-3 none-padding">+960</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mali (+223)">Mali</span>
+								<span class="code col-md-3 none-padding">+223</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Malta (+356)">Malta</span>
+								<span class="code col-md-3 none-padding">+356</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mauritania (+222)">Mauritania</span>
+								<span class="code col-md-3 none-padding">+222</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mauritania (+222)">Mauritania</span>
+								<span class="code col-md-3 none-padding">+222</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mexico (+52)">Mexico</span>
+								<span class="code col-md-3 none-padding">+52</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Moldova (+373)">Moldova</span>
+								<span class="code col-md-3 none-padding">+373</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Monaco (+377)">Monaco</span>
+								<span class="code col-md-3 none-padding">+377</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mongolia (+976)">Mongolia</span>
+								<span class="code col-md-3 none-padding">+976</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Morocco (+212)">Morocco</span>
+								<span class="code col-md-3 none-padding">+212</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Mozambique (+258)">Mozambique</span>
+								<span class="code col-md-3 none-padding">+258</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Myanmar (+95)">Myanmar</span>
+								<span class="code col-md-3 none-padding">+95</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Namibia (+264)">Namibia</span>
+								<span class="code col-md-3 none-padding">+264</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Nauru (+674)">Nauru</span>
+								<span class="code col-md-3 none-padding">+674</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Nepal (+977)">Nepal</span>
+								<span class="code col-md-3 none-padding">+977</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Netherlands (+31)">Netherlands</span>
+								<span class="code col-md-3 none-padding">+31</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Nicaragua (+505)">Nicaragua</span>
+								<span class="code col-md-3 none-padding">+505</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Niger (+227)">Niger</span>
+								<span class="code col-md-3 none-padding">+227</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Nigeria (+234)">Nigeria</span>
+								<span class="code col-md-3 none-padding">+234</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Norway (+47)">Norway</span>
+								<span class="code col-md-3 none-padding">+47</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Oman (+968)">Oman</span>
+								<span class="code col-md-3 none-padding">+968</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Oman (+968)">Oman</span>
+								<span class="code col-md-3 none-padding">+968</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Palau (+680)">Palau</span>
+								<span class="code col-md-3 none-padding">+680</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Panama (+507)">Panama</span>
+								<span class="code col-md-3 none-padding">+507</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Paraguay (+595)">Paraguay</span>
+								<span class="code col-md-3 none-padding">+595</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Peru (+51)">Peru</span>
+								<span class="code col-md-3 none-padding">+51</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Philippines (+63)">Philippines</span>
+								<span class="code col-md-3 none-padding">+63</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Poland (+48)">Poland</span>
+								<span class="code col-md-3 none-padding">+48</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Portugal (+351)">Portugal</span>
+								<span class="code col-md-3 none-padding">+351</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Qatar (+974)">Qatar</span>
+								<span class="code col-md-3 none-padding">+974</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Romania (+40)">Romania</span>
+								<span class="code col-md-3 none-padding">+40</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Russia (+7)">Russia</span>
+								<span class="code col-md-3 none-padding">+7</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Rwanda (+250)">Rwanda</span>
+								<span class="code col-md-3 none-padding">+250</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Senegal (+221)">Senegal</span>
+								<span class="code col-md-3 none-padding">+221</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Serbia (+381)">Serbia</span>
+								<span class="code col-md-3 none-padding">+381</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Seychelles (+248)">Seychelles</span>
+								<span class="code col-md-3 none-padding">+248</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Singapore (+65)">Singapore</span>
+								<span class="code col-md-3 none-padding">+65</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Slovenia (+386)">Slovenia</span>
+								<span class="code col-md-3 none-padding">+386</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Somalia (+252)">Somalia</span>
+								<span class="code col-md-3 none-padding">+252</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Spain (+34)">Spain</span>
+								<span class="code col-md-3 none-padding">+34</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Sudan (+249)">Sudan</span>
+								<span class="code col-md-3 none-padding">+249</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Swaziland (+268)">Swaziland</span>
+								<span class="code col-md-3 none-padding">+268</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Sweden (+46)">Sweden</span>
+								<span class="code col-md-3 none-padding">+46</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Switzerland (+41)">Switzerland</span>
+								<span class="code col-md-3 none-padding">+41</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Syria (+963)">Syria</span>
+								<span class="code col-md-3 none-padding">+963</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Taiwan (+886)">Taiwan</span>
+								<span class="code col-md-3 none-padding">+886</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Tajikistan (+7)">Tajikistan</span>
+								<span class="code col-md-3 none-padding">+7</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Thailand (+66)">Thailand</span>
+								<span class="code col-md-3 none-padding">+66</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Togo (+228)">Togo</span>
+								<span class="code col-md-3 none-padding">+228</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Tonga (+676)">Tonga</span>
+								<span class="code col-md-3 none-padding">+676</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Tunisia (+216)">Tunisia</span>
+								<span class="code col-md-3 none-padding">+216</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Turkey (+90)">Turkey</span>
+								<span class="code col-md-3 none-padding">+90</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Turkmenistan (+7)">Turkmenistan</span>
+								<span class="code col-md-3 none-padding">+7</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Tuvalu (+688)">Tuvalu</span>
+								<span class="code col-md-3 none-padding">+688</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="UK (+44)">UK</span>
+								<span class="code col-md-3 none-padding">+44</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="USA (+1)">USA</span>
+								<span class="code col-md-3 none-padding">+1</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Uganda (+256)">Uganda</span>
+								<span class="code col-md-3 none-padding">+256</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Ukraine (+380)">Ukraine</span>
+								<span class="code col-md-3 none-padding">+380</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Uruguay (+598)">Uruguay</span>
+								<span class="code col-md-3 none-padding">+598</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Uzbekistan (+7)">Uzbekistan</span>
+								<span class="code col-md-3 none-padding">+7</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Vanuatu (+678)">Vanuatu</span>
+								<span class="code col-md-3 none-padding">+678</span>
+							</li>
+							<li  class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Venezuela (+58)">Venezuela</span>
+								<span class="code col-md-3 none-padding">+58</span>
+							</li>						
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Vietnam (+84)">Vietnam</span>
+								<span class="code col-md-3 none-padding">+84</span>
+							</li>
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Zambia (+260)">Zambia</span>
+								<span class="code col-md-3 none-padding">+260</span>
+							</li>
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Zimbabwe (+263)">Zimbabwe</span>
+								<span class="code col-md-3 none-padding">+263</span>
+							</li>
+							<li class="row none-margin">
+								<span class="country col-md-9 none-padding" title="Other">Other</span>
+								<span class="code col-md-3 none-padding"></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-xs-8 col-md-7 none-padding">
+					<input class="input-box full-width" type="text" id = "inputPhoneNum" name="phone" placeholder="Your phone number"></input>
+				</div>
+			</div>
+			<div class="row none-margin">
+				<div class="col-md-12 none-padding">
+					<input class="submit-btn" type="button" id="submitPhoneNum" name="submitPhoneNum" value="OK"></input>
+				</div>
+			</div>		
+		</form>
+	</div>
+	<!-- Alert error on submit phone number -->
+	<div class="dialog" id="invalid-enter-phone">
+		<p class="none-margin"></p>
+	</div>
+	<!-- Alert when using safari web browser -->
+	<div class="dialog" id="check-web-browser">
+		<p class="none-margin"></p>
+	</div>
+	<!-- Verify phone number -->
+	<div class="dialog" id="verify">
+		<p class="command">
+			We sent code to <span id="phonenumber"></span><br>
+			Please check your phone and input code below.<br>
+			Don't see code, <a href="" id="resendCode" title="Resend code" onclick="resend()">resend now!</a>
+		</p>	
+		<form>
+			<input class="input-box" type="text" name="code" placeholder="Code" id = "submitCodeInput">
+			<input class="submit-btn" type="button" name="submitCode" id="submitCode" value="OK">	
+		</form>
+	</div>
+	<!-- Calling -->
+	<div class="dialog" id="calling">
+		<div class="agent-avatar">
+			<img src="/images/user.png" alt="Agent">
+			<p class="agent-name none-margin"></p>
+			<!-- <p class="agent-phone-number none-margin"></p> -->
+		</div>
+		<span class="call-status">Calling...</span>
+		<div class='function-btn'>
+			<!-- <button type="button" id="mute" onclick="mute()"></button> -->
+			<button type="button" id="mute" class="deactive-mute"></button>
+			<button type="button" id="hangup" onclick="hangup()"></button>
+			<button type="button" id="mute-speaker" class="deactive-mute-speaker"></button>
+			<!-- <button type="button" id="mute-speaker"></button> -->
+		</div>
+	</div>
+</body>
+</html>

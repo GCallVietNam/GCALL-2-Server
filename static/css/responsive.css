@@ -1,0 +1,106 @@
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px){
+	#user-info {
+	    margin-top: 0px;
+	}
+
+	#user-info .current-phone-number {
+	    font-size: 10pt;
+	    padding: 5px 10px;
+	}
+
+	.nav li ul {
+		margin-left: -20px;
+	}
+
+	#user-info .log-out-button {
+		padding: 1px 20px;
+	}
+
+	#small-logo {
+	    width: 60px;
+	    height: 130px;
+	}
+
+	.dialog {
+	    width: 90%;
+	}
+
+	.command {
+	    font-size: 12pt;
+	    margin-top: 5px;
+	    width: 80%;
+	}
+
+	.list-team {
+	    padding-left: 0px;
+	}
+
+	.item .team img {
+	    margin-right: 10px;
+	    width: 25px;
+	    padding: 3px;
+	}
+
+	.item .team span {
+	    font-size: 12pt;
+	    overflow: hidden;
+	    max-height: 25px;
+	}
+
+	.select-country-code {
+	    width: 90%;
+	}
+
+	#select-team, #select-sub-team {
+	    height: 210px;
+	}
+
+	.select-country-code .country-code-content {
+	    border-right: none;
+	}
+
+	.submit-btn {
+	    width: 90%;
+	}
+
+	#enter-hotline #select-hotline #inputHotline {
+		width: 90%;
+	}
+
+	#call-img {
+		margin-bottom: 8px;
+		margin-left: 7px;
+		width: 70px;
+		height: 70px;
+	}
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px){
+	.dialog {
+	    width: 70%;
+	}
+	#call-img {
+	    width: 90px;
+	    height: 90px;
+	    margin-bottom: 8px;
+	    margin-left: 20px;
+	    margin-top: 25px;
+	}
+
+	#click-to-call-title {
+		font-size: 28pt;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px){
+	.dialog {
+	    width: 60%;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1999px){
+	.dialog {
+	    width: 40%;
+	}
+}
+

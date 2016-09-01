@@ -1,0 +1,8 @@
+{
+	"accessKeyId": "YOUR_AWS_ACCESS_KEY_ID",
+	"secretAccessKey": "YOUR_SECRET_ACCESS_KEY",
+	"region": "YOUR_AMAZON_REGION",
+	"apiVersions": {
+		"sns": "2010-03-31"
+	}
+}
