@@ -12,6 +12,25 @@ Gcall brings a platform for SMEs and online stores to support their customer bet
 * Amazon Web Service SNS and APNS, check it out [here](http://docs.aws.amazon.com/sns/latest/dg/sns-mobile-push-send-apns-voip.html)
 * Twilio account
 
+### Installation
+
+***
+
+* Clone project:
+~~~
+git clone https://github.com/GCallVietNam/GCALL-2-Server.git
+~~~
+
+* Install utility modules:
+~~~
+npm install
+~~~
+
+* Start server:
+~~~
+npm start
+~~~
+
 ### Features
 
 ***
@@ -154,25 +173,6 @@ root
 | objectId | groupId | master | caller | groupName | hotline | solvedBy |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | string | string | string | string | string | string | string |
-
-### Installation
-
-***
-
-* Clone project:
-~~~
-git clone https://github.com/GCallVietNam/GCALL-2-Server.git
-~~~
-
-* Install utility modules:
-~~~
-npm install
-~~~
-
-* Start server:
-~~~
-npm start
-~~~
 
 ### Author
 
