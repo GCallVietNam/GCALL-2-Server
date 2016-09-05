@@ -167,9 +167,9 @@ root
 
 **Unverified**
 
-| objectId | sessionToken | subscriptions | deviceToken |
+| objectId | hotline | master | code |
 |:------:|:------:|:------:|:------:|
-| string | string | array[object] | object |
+| string | string | string | string |
 
 **Unsolved**
 
